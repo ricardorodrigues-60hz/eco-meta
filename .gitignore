@@ -13,3 +13,43 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Arquivos de Build e Gradle
+.gradle/
+build/
+*.class
+
+# Configurações Locais (Caminhos do SDK, etc)
+local.properties
+
+# Android Studio / IntelliJ
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/caches
+.idea/modules.xml
+.idea/navEditor.xml
+*.iml
+
+# Arquivos de Log e Sistema
+*.log
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Arquivos de Saída (Builds)
+*.apk
+*.aab
+output-metadata.json
+
+# --- FIREBASE & SEGURANÇA ---
+# Arquivo de configuração do Firebase (opcional, veja nota abaixo)
+# google-services.json
+
+# Chaves de Assinatura (Keystores)
+*.jks
+*.keystore
+
