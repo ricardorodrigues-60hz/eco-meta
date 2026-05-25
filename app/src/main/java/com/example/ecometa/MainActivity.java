@@ -9,8 +9,10 @@ import com.example.ecometa.ui.fragment.DesafiosFragment;
 import com.example.ecometa.ui.fragment.HistoricoFragment;
 import com.example.ecometa.ui.fragment.HomeFragment;
 import com.example.ecometa.ui.fragment.RankingFragment;
+import com.example.ecometa.util.EcoMetaMockHelper;
 
 /**
+ * Especialista: Ricardo (Sênior Android Architect)
  * MainActivity atua como o Router Principal da aplicação.
  * Implementa navegação via BottomNavigationView com preservação de estado (hide/show).
  */
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    // Fragments das abas
+    // Instâncias dos Fragments das abas (MANTIDAS EM MEMÓRIA)
     private final Fragment homeFragment = new HomeFragment();
     private final Fragment historicoFragment = new HistoricoFragment();
     private final Fragment desafiosFragment = new DesafiosFragment();
@@ -35,17 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
         setupNavigation();
 
+        // Coloque isso dentro do onCreate da MainActivity, rode o app uma vez, e depois apague/comente a linha!
+        EcoMetaMockHelper mockHelper = new EcoMetaMockHelper();
+        mockHelper.popularBancoParaSimulacao();
     }
 
     /**
      * Configura a BottomNavigationView e inicializa os Fragments no container.
+     * Usa hide/show para garantir que o scroll e estado de cada aba sejam preservados.
      */
     private void setupNavigation() {
-        // Adiciona todos os fragments ao container, mas esconde os que não são a Home
-        fragmentManager.beginTransaction().add(R.id.main, rankingFragment, "4").hide(rankingFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main, desafiosFragment, "3").hide(desafiosFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main, historicoFragment, "2").hide(historicoFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.main, homeFragment, "1").commit();
+        // CORREÇÃO: Usando o ID correto do container 'fragment_container' definido no layout.
+        fragmentManager.beginTransaction().add(R.id.fragment_container, rankingFragment, "4").hide(rankingFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.fragment_container, desafiosFragment, "3").hide(desafiosFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.fragment_container, historicoFragment, "2").hide(historicoFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment, "1").commit();
 
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
