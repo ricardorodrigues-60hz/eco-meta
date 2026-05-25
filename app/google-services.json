@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "232935599329",
+    "project_id": "ecometa-c04c0",
+    "storage_bucket": "ecometa-c04c0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232935599329:android:36b36055312639f9f3dba0",
+        "android_client_info": {
+          "package_name": "com.example.ecometa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD91hUzsAmNeeoXdFXCyMO7RugPT4sOgm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

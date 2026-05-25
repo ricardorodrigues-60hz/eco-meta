@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- EcoMeta Palette (Green/Eco focused) -->
+    <color name="md_theme_primary">#2D6A4F</color>
+    <color name="md_theme_onPrimary">#FFFFFF</color>
+    <color name="md_theme_primaryContainer">#D8F3DC</color>
+    <color name="md_theme_onPrimaryContainer">#081C15</color>
+
+    <color name="md_theme_secondary">#40916C</color>
+    <color name="md_theme_onSecondary">#FFFFFF</color>
+    <color name="md_theme_secondaryContainer">#B7E4C7</color>
+
+    <color name="md_theme_surface">#F8F9FA</color>
+    <color name="md_theme_onSurface">#1B4332</color>
+    <color name="md_theme_surfaceVariant">#E9ECEF</color>
+    <color name="md_theme_onSurfaceVariant">#495057</color>
 </resources>

@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.ecometa" />
+                  <option name="mobileSdkAppId" value="1:232935599329:android:36b36055312639f9f3dba0" />
+                  <option name="projectId" value="ecometa-c04c0" />
+                  <option name="projectNumber" value="232935599329" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
