@@ -5,10 +5,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.ecometa.model.Atividade;
+import com.example.ecometa.model.Conquista;
+import com.example.ecometa.model.Desafio;
 import com.example.ecometa.model.Usuario;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +26,8 @@ public class EcoMetaRepository {
     // Constantes para Coleções
     private static final String COLECAO_USUARIOS = "usuarios";
     private static final String COLECAO_ATIVIDADES = "atividades";
+    private static final String COLECAO_DESAFIOS = "desafios";
+    private static final String COLECAO_CONQUISTAS = "conquistas_usuario";
 
     // Fatores de Emissão (kg CO2 por km)
     private static final double FATOR_CARRO = 0.120;
@@ -103,7 +109,7 @@ public class EcoMetaRepository {
      */
     public void registrarAtividade(@NonNull Atividade atividade, @NonNull RepositoryCallback<Void> callback) {
         try {
-            // Lógica Core: Cálculo do CO2 Evitado
+            // Lógica Core: Cálculo do CO2 Evitado (Isolamento de Regra de Negócio)
             double co2Evitado = calcularCO2Evitado(atividade.getTipo_transporte(), atividade.getDistancia_km());
             atividade.setCo2_evitado(co2Evitado);
 
@@ -111,7 +117,6 @@ public class EcoMetaRepository {
                     .add(atividade)
                     .addOnSuccessListener(documentReference -> {
                         atividade.setId_atividade(documentReference.getId());
-                        // Opcional: Atualizar o documento com o ID gerado pelo Firestore
                         documentReference.update("id_atividade", documentReference.getId());
                         callback.onSuccess(null);
                     })
@@ -123,6 +128,48 @@ public class EcoMetaRepository {
             Log.e(TAG, "Exceção inesperada ao registrar atividade", e);
             callback.onError(e);
         }
+    }
+
+    /**
+     * Busca os desafios ativos.
+     */
+    public void buscarDesafios(@NonNull RepositoryCallback<List<Desafio>> callback) {
+        db.collection(COLECAO_DESAFIOS)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Desafio> desafios = queryDocumentSnapshots.toObjects(Desafio.class);
+                    callback.onSuccess(desafios);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Busca o ranking de usuários por eco_points.
+     */
+    public void buscarRanking(@NonNull RepositoryCallback<List<Usuario>> callback) {
+        db.collection(COLECAO_USUARIOS)
+                .orderBy("eco_points", Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Usuario> ranking = queryDocumentSnapshots.toObjects(Usuario.class);
+                    callback.onSuccess(ranking);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
+    /**
+     * Busca as conquistas (insígnias) de um usuário.
+     */
+    public void buscarConquistas(@NonNull String userId, @NonNull RepositoryCallback<List<Conquista>> callback) {
+        db.collection(COLECAO_CONQUISTAS)
+                .whereEqualTo("user_id", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Conquista> conquistas = queryDocumentSnapshots.toObjects(Conquista.class);
+                    callback.onSuccess(conquistas);
+                })
+                .addOnFailureListener(callback::onError);
     }
 
     /**

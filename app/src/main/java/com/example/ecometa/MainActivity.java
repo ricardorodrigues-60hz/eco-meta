@@ -18,13 +18,13 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private final FragmentManager fragmentManager = getSupportFragmentManager();
-    
+
     // Fragments das abas
     private final Fragment homeFragment = new HomeFragment();
     private final Fragment historicoFragment = new HistoricoFragment();
     private final Fragment desafiosFragment = new DesafiosFragment();
     private final Fragment rankingFragment = new RankingFragment();
-    
+
     private Fragment activeFragment = homeFragment;
 
     @Override
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setupNavigation();
+
     }
 
     /**
@@ -41,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupNavigation() {
         // Adiciona todos os fragments ao container, mas esconde os que não são a Home
-        fragmentManager.beginTransaction().add(R.id.fragment_container, rankingFragment, "4").hide(rankingFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragment_container, desafiosFragment, "3").hide(desafiosFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragment_container, historicoFragment, "2").hide(historicoFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment, "1").commit();
+        fragmentManager.beginTransaction().add(R.id.main, rankingFragment, "4").hide(rankingFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.main, desafiosFragment, "3").hide(desafiosFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.main, historicoFragment, "2").hide(historicoFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.main, homeFragment, "1").commit();
 
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
