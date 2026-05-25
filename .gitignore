@@ -47,7 +47,7 @@ output-metadata.json
 
 # --- FIREBASE & SEGURANÇA ---
 # Arquivo de configuração do Firebase (opcional, veja nota abaixo)
-# google-services.json
+google-services.json
 
 # Chaves de Assinatura (Keystores)
 *.jks
