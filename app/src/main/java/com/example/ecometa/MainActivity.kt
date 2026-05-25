@@ -1,88 +1,105 @@
-package com.example.ecometa;
+package com.example.ecometa
 
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import com.example.ecometa.databinding.ActivityMainBinding;
-import com.example.ecometa.ui.fragment.DesafiosFragment;
-import com.example.ecometa.ui.fragment.HistoricoFragment;
-import com.example.ecometa.ui.fragment.HomeFragment;
-import com.example.ecometa.ui.fragment.RankingFragment;
-import com.example.ecometa.util.EcoMetaMockHelper;
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Leaderboard
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.ecometa.ui.screens.ChallengesScreen
+import com.example.ecometa.ui.screens.HistoryScreen
+import com.example.ecometa.ui.screens.HomeScreen
+import com.example.ecometa.ui.screens.RankingScreen
+import com.example.ecometa.ui.theme.EcoMetaTheme
 
-/**
- * Especialista: Ricardo (Sênior Android Architect)
- * MainActivity atua como o Router Principal da aplicação.
- * Implementa navegação via BottomNavigationView com preservação de estado (hide/show).
- */
-public class MainActivity extends AppCompatActivity {
+sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
+    object Home : Screen("home", "Home", Icons.Default.Home)
+    object History : Screen("history", "Histórico", Icons.Default.History)
+    object Challenges : Screen("challenges", "Desafios", Icons.Default.EmojiEvents)
+    object Ranking : Screen("ranking", "Ranking", Icons.Default.Leaderboard)
+}
 
-    private ActivityMainBinding binding;
-    private final FragmentManager fragmentManager = getSupportFragmentManager();
-
-    // Instâncias dos Fragments das abas (MANTIDAS EM MEMÓRIA)
-    private final Fragment homeFragment = new HomeFragment();
-    private final Fragment historicoFragment = new HistoricoFragment();
-    private final Fragment desafiosFragment = new DesafiosFragment();
-    private final Fragment rankingFragment = new RankingFragment();
-
-    private Fragment activeFragment = homeFragment;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        setupNavigation();
-
-        // Coloque isso dentro do onCreate da MainActivity, rode o app uma vez, e depois apague/comente a linha!
-        EcoMetaMockHelper mockHelper = new EcoMetaMockHelper();
-        mockHelper.popularBancoParaSimulacao();
-    }
-
-    /**
-     * Configura a BottomNavigationView e inicializa os Fragments no container.
-     * Usa hide/show para garantir que o scroll e estado de cada aba sejam preservados.
-     */
-    private void setupNavigation() {
-        // CORREÇÃO: Usando o ID correto do container 'fragment_container' definido no layout.
-        fragmentManager.beginTransaction().add(R.id.fragment_container, rankingFragment, "4").hide(rankingFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragment_container, desafiosFragment, "3").hide(desafiosFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragment_container, historicoFragment, "2").hide(historicoFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment, "1").commit();
-
-        binding.bottomNavigation.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.nav_home) {
-                switchFragment(homeFragment);
-                return true;
-            } else if (itemId == R.id.nav_historico) {
-                switchFragment(historicoFragment);
-                return true;
-            } else if (itemId == R.id.nav_desafios) {
-                switchFragment(desafiosFragment);
-                return true;
-            } else if (itemId == R.id.nav_ranking) {
-                switchFragment(rankingFragment);
-                return true;
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            EcoMetaTheme {
+                MainLayout()
             }
-            return false;
-        });
+        }
     }
+}
 
-    /**
-     * Realiza a troca de fragments utilizando hide() e show() para preservar o estado.
-     * @param target O fragment que deve ser exibido.
-     */
-    private void switchFragment(Fragment target) {
-        if (activeFragment != target) {
-            fragmentManager.beginTransaction()
-                    .hide(activeFragment)
-                    .show(target)
-                    .commit();
-            activeFragment = target;
+@Composable
+fun MainLayout() {
+    val navController = rememberNavController()
+    val items = listOf(
+        Screen.Home,
+        Screen.History,
+        Screen.Challenges,
+        Screen.Ranking
+    )
+
+    Scaffold(
+        bottomBar = {
+            NavigationBar(
+                containerColor = Color.White,
+                tonalElevation = 8.dp
+            ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                
+                items.forEach { screen ->
+                    NavigationBarItem(
+                        icon = { Icon(screen.icon, contentDescription = null) },
+                        label = { Text(screen.title) },
+                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            unselectedIconColor = Color.LightGray,
+                            unselectedTextColor = Color.LightGray,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                        )
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Screen.Home.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(Screen.Home.route) { HomeScreen() }
+            composable(Screen.History.route) { HistoryScreen() }
+            composable(Screen.Challenges.route) { ChallengesScreen() }
+            composable(Screen.Ranking.route) { RankingScreen() }
         }
     }
 }
