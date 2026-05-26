@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 /**
- * Camada: Repository
+ * Repository
  * Gerencia a comunicação com o Firebase Firestore usando Listeners padrão.
  */
 public class EcoMetaRepository {

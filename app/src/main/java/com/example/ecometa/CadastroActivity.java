@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Objects;
 
 /**
- * Camada: View (Activity de Cadastro)
+ * ctivity de Cadastro
  * Responsável pela criação de novos usuários no Firebase Auth e Firestore.
  */
 public class CadastroActivity extends AppCompatActivity {
