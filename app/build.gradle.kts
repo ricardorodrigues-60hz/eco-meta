@@ -34,10 +34,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
+        compose = false
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -54,15 +51,9 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
     
-    // Compose
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.icons.extended)
-    implementation(libs.compose.activity)
-    implementation(libs.compose.navigation)
+    // Navigation (XML Based)
+    implementation("androidx.navigation:navigation-fragment:2.8.8")
+    implementation("androidx.navigation:navigation-ui:2.8.8")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)

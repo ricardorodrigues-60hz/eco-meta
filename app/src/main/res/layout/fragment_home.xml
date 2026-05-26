@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/eco_surface">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header Gradiente -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/gradient_eco"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/tvHeaderTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Olá, Eco-Guardião!"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvHeaderTitle"
+                    android:layout_marginTop="8dp"
+                    android:text="Seu impacto ambiental hoje"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <!-- Card de Nível (Efeito sobreposição) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="-40dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nível Atual"
+                        android:textColor="@color/eco_text_secondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tvNivel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Brotinho"
+                        android:textColor="@color/eco_green_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:indicatorColor="@color/eco_green_primary"
+                        app:trackColor="@color/eco_green_light"
+                        app:trackCornerRadius="4dp"
+                        app:trackThickness="8dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Métricas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="12dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:orientation="vertical">
+                        <TextView android:text="EcoPoints" android:textSize="12sp"/>
+                        <TextView android:id="@+id/tvEcoPoints" android:text="1,250" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/eco_green_primary"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <View android:layout_width="16dp" android:layout_height="1dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="12dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:orientation="vertical">
+                        <TextView android:text="CO2 Poupatdo" android:textSize="12sp"/>
+                        <TextView android:id="@+id/tvCO2" android:text="12.5 kg" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/eco_blue"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:text="Novo Trajeto"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/eco_green_primary"
+        app:icon="@drawable/ic_add"
+        app:iconTint="@color/white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

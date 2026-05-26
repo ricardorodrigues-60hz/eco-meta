@@ -4,9 +4,9 @@ O **EcoMeta** é um aplicativo nativo Android desenvolvido para incentivar a mob
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Linguagem**: [Kotlin 2.1.10](https://kotlinlang.org/)
-- **Interface**: [Jetpack Compose](https://developer.android.com/jetpack/compose) (Material Design 3)
-- **Navegação**: Jetpack Navigation Component
+- **Linguagem**: Java 11 (POO Clássica)
+- **Interface**: XML (Material Design 3 - ConstraintLayout, MaterialCardView)
+- **Navegação**: Navigation Component (Fragment-based)
 - **Arquitetura**: MVVM (Model-View-ViewModel) + Repository Pattern
 - **Backend**: [Firebase](https://firebase.google.com/) (Authentication & Firestore)
 - **Build System**: Gradle (Kotlin DSL) com Version Catalogs (`libs.versions.toml`)
@@ -15,13 +15,12 @@ O **EcoMeta** é um aplicativo nativo Android desenvolvido para incentivar a mob
 
 ```text
 com.example.ecometa
-├── model/           # Data classes e modelos do Firestore
-├── repository/      # Camada de abstração de dados (Firebase)
-├── viewmodel/       # Lógica de negócio e estado da UI
+├── model/           # Classes POJO e modelos do Firestore
+├── repository/      # Camada de abstração de dados e Callbacks
+├── viewmodel/       # Lógica de negócio e LiveData
 └── ui/
-    ├── theme/       # Design System (Cores, Tipografia, Shapes)
-    ├── components/  # Componentes reutilizáveis (EcoCard, EcoButton, etc)
-    └── screens/     # Telas do aplicativo (Home, Ranking, etc)
+    ├── fragment/    # Telas do aplicativo (Home, Histórico, etc)
+    └── adapter/     # Adapters para RecyclerView (Histórico)
 ```
 
 ## ⚙️ Configuração do Firebase
@@ -49,4 +48,4 @@ Onde:
 - **f_escolhido**: Bicicleta (0.0), Caminhada (0.0), Ônibus (0.030), Metrô (0.040).
 
 ---
-*Desenvolvido como um projeto de impacto ambiental positivo.*
+*Desenvolvido em Java/XML focado em estabilidade e performance nativa.*

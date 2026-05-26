@@ -1,14 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.EcoMeta" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/md_theme_primary</item>
-        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
-        <item name="colorSecondary">@color/md_theme_secondary</item>
-        <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer</item>
-        <item name="android:windowBackground">@color/md_theme_surface</item>
+        <item name="colorPrimary">@color/eco_green_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/eco_green_light</item>
+        <item name="colorOnPrimaryContainer">@color/eco_green_dark</item>
+        <item name="colorSecondary">@color/eco_green_dark</item>
+        <item name="android:windowBackground">@color/eco_surface</item>
     </style>
 
     <style name="Theme.EcoMeta" parent="Base.Theme.EcoMeta" />
