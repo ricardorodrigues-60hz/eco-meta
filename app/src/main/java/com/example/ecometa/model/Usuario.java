@@ -4,7 +4,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 
 /**
  * Modelo de dados para o Usuário.
- * Representa a estrutura exata do documento na coleção 'usuarios' do Firestore.
+ * Representa a estrutura exata do documento na coleção 'user' do Firestore.
  */
 @IgnoreExtraProperties
 public class Usuario {

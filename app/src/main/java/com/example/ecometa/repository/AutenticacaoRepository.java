@@ -21,7 +21,8 @@ public class AutenticacaoRepository {
     private final FirebaseAuth mAuth;
     private final FirebaseFirestore db;
 
-    private static final String COLECAO_USUARIOS = "usuarios";
+    // 1. ALTERADO AQUI: De "usuarios" para "user"
+    private static final String COLECAO_USUARIOS = "user";
     private static final String COLECAO_ATIVIDADES = "atividades";
 
     private static final double FATOR_CARRO = 0.120;
@@ -41,7 +42,6 @@ public class AutenticacaoRepository {
     }
 
     //  Realiza o cadastro do usuário no Firebase Auth e sincroniza criando o perfil no Firestore.
-
     public void cadastrarUsuario(@NonNull String nome, @NonNull String email, @NonNull String senha, @NonNull RepositoryCallback<Void> callback) {
         mAuth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(task -> {
@@ -50,10 +50,10 @@ public class AutenticacaoRepository {
                         if (firebaseUser != null) {
                             String uid = firebaseUser.getUid();
 
-                            // CORREÇÃO AQUI: Chamando o construtor correto que definimos na sua classe Usuario.java
                             Usuario novoUsuario = new Usuario(uid, nome, 0, 0.0);
-                            novoUsuario.setEmail(email); // Atribui o e-mail usando o método setter de forma limpa
+                            novoUsuario.setEmail(email);
 
+                            // Usa a constante dinâmica que agora vale "user"
                             db.collection(COLECAO_USUARIOS).document(uid).set(novoUsuario)
                                     .addOnSuccessListener(aVoid -> callback.onSuccess(null))
                                     .addOnFailureListener(callback::onError);
@@ -70,8 +70,7 @@ public class AutenticacaoRepository {
                 });
     }
 
-     // Realiza a autenticação via E-mail e Senha no Firebase Auth.
-
+    // Realiza a autenticação via E-mail e Senha no Firebase Auth.
     public void logarUsuario(@NonNull String email, @NonNull String senha, @NonNull RepositoryCallback<Void> callback) {
         mAuth.signInWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(task -> {
@@ -87,15 +86,13 @@ public class AutenticacaoRepository {
                 });
     }
 
-
-     // Retorna o ID único do usuário atualmente autenticado no aplicativo.
+    // Retorna o ID único do usuário atualmente autenticado no aplicativo.
     public String obterIdUsuarioAtual() {
         FirebaseUser user = mAuth.getCurrentUser();
         return (user != null) ? user.getUid() : null;
     }
 
-
-     // Puxa os dados de perfil de um usuário específico do Firestore.
+    // Puxa os dados de perfil de um usuário específico do Firestore.
     public void buscarUsuario(@NonNull String userId, @NonNull RepositoryCallback<Usuario> callback) {
         db.collection(COLECAO_USUARIOS).document(userId).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -108,26 +105,18 @@ public class AutenticacaoRepository {
                 .addOnFailureListener(callback::onError);
     }
 
-    /**
-     * Registra uma atividade e incrementa os EcoPoints e CO2 poupado no documento do usuário em lote.
-     */
+
     public void registrarAtividade(@NonNull Atividade atividade, @NonNull RepositoryCallback<Void> callback) {
         double co2Evitado = calcularCO2Evitado(atividade.getTipo_transporte(), atividade.getDistancia_km());
         atividade.setCo2_evitado(co2Evitado);
 
-        // Regra de Negócio: Cada trajeto sustentável concede pontos base + cálculo proporcional
         int pontosGanhos = (int) (co2Evitado * 10) + 10;
-
-        // CORREÇÃO CASO SUA CLASSE ATIVIDADE NÃO CONTENHA POINTS_EARNED:
-        // Se a sua coleção de atividades não salvar os pontos por trajeto individualmente, você pode remover a linha abaixo.
-        // Se salvar, lembre-se de adicionar o atributo int points_earned na classe Atividade.java.
 
         db.collection(COLECAO_ATIVIDADES).add(atividade)
                 .addOnSuccessListener(documentReference -> {
                     String idGerado = documentReference.getId();
                     documentReference.update("id_atividade", idGerado);
 
-                    // Sincronização em tempo real: Incrementa os dados consolidados no perfil do usuário
                     atualizarMetricasUsuario(atividade.getUser_id(), pontosGanhos, co2Evitado, callback);
                 })
                 .addOnFailureListener(callback::onError);
@@ -147,9 +136,9 @@ public class AutenticacaoRepository {
                 .addOnFailureListener(callback::onError);
     }
 
-
-     // Executa o incremento atômico dos pontos e do co2 acumulado para evitar inconsistências.
+    // Executa o incremento atômico dos pontos e do co2 acumulado para evitar inconsistências.
     private void atualizarMetricasUsuario(String userId, int pontos, double co2, @NonNull RepositoryCallback<Void> callback) {
+
         DocumentReference userRef = db.collection(COLECAO_USUARIOS).document(userId);
 
         db.runTransaction(transaction -> {
@@ -161,8 +150,7 @@ public class AutenticacaoRepository {
                 .addOnFailureListener(callback::onError);
     }
 
-     // Lógica básica para cálculo de impacto ecológico
-
+    // Lógica básica para cálculo de impacto ecológico
     private double calcularCO2Evitado(String tipo, double distancia) {
         double fatorEscolhido;
         if (tipo == null) return FATOR_BICICLETA;
