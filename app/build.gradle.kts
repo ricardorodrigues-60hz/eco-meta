@@ -1,17 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.compose.compiler)
+    // Remove compose compiler plugin since we are not using compose
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.ecometa"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.ecometa"
