@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecometa.R;
-import com.example.ecometa.repository.EcoMetaRepository;
+import com.example.ecometa.repository.AutenticacaoRepository;
 import com.example.ecometa.ui.adapter.ActivityAdapter;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
@@ -29,7 +29,7 @@ public class HistoryFragment extends Fragment {
         rvHistory = view.findViewById(R.id.rvHistory);
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ViewModelFactory factory = new ViewModelFactory(new EcoMetaRepository());
+        ViewModelFactory factory = new ViewModelFactory(new AutenticacaoRepository());
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
 
         setupObservers();

@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.ecometa.model.Atividade;
 import com.example.ecometa.model.Usuario;
-import com.example.ecometa.repository.EcoMetaRepository;
+import com.example.ecometa.repository.AutenticacaoRepository;
+
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * Gerencia o estado da UI para as telas do EcoMeta.
  */
 public class EcoMetaViewModel extends ViewModel {
-    private final EcoMetaRepository repository;
+    private final AutenticacaoRepository repository;
 
     private final MutableLiveData<Usuario> _usuario = new MutableLiveData<>();
     public final LiveData<Usuario> usuario = _usuario;
@@ -24,19 +25,19 @@ public class EcoMetaViewModel extends ViewModel {
     private final MutableLiveData<String> _erro = new MutableLiveData<>();
     public final LiveData<String> erro = _erro;
 
-    public EcoMetaViewModel(EcoMetaRepository repository) {
+    public EcoMetaViewModel(AutenticacaoRepository repository) {
         this.repository = repository;
     }
 
     public void carregarDadosUsuario(String userId) {
-        repository.buscarUsuario(userId, new EcoMetaRepository.RepositoryCallback<Usuario>() {
+        repository.buscarUsuario(userId, new AutenticacaoRepository.RepositoryCallback<Usuario>() {
             @Override public void onSuccess(Usuario result) { _usuario.setValue(result); }
             @Override public void onError(Exception e) { _erro.setValue(e.getMessage()); }
         });
     }
 
     public void carregarAtividades(String userId) {
-        repository.listarAtividades(userId, new EcoMetaRepository.RepositoryCallback<List<Atividade>>() {
+        repository.listarAtividades(userId, new AutenticacaoRepository.RepositoryCallback<List<Atividade>>() {
             @Override public void onSuccess(List<Atividade> result) { _atividades.setValue(result); }
             @Override public void onError(Exception e) { _erro.setValue(e.getMessage()); }
         });
@@ -49,7 +50,7 @@ public class EcoMetaViewModel extends ViewModel {
         nova.setDistancia_km(distancia);
         nova.setData(com.google.firebase.Timestamp.now());
 
-        repository.registrarAtividade(nova, new EcoMetaRepository.RepositoryCallback<Void>() {
+        repository.registrarAtividade(nova, new AutenticacaoRepository.RepositoryCallback<Void>() {
             @Override public void onSuccess(Void result) { carregarDadosUsuario(userId); carregarAtividades(userId); }
             @Override public void onError(Exception e) { _erro.setValue(e.getMessage()); }
         });

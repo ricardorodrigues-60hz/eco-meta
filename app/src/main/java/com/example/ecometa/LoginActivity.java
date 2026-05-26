@@ -7,17 +7,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ecometa.repository.AutenticacaoRepository;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+
+import java.util.Objects;
 
 /**
  * Camada: View (Activity de Login)
- * Responsável pela autenticação dos usuários utilizando Firebase Authentication.
+ * Coleta as credenciais da UI e delega as operações de Auth para o AutenticacaoRepository.
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,15 +27,17 @@ public class LoginActivity extends AppCompatActivity {
     private MaterialButton btnEntrar;
     private TextView tvIrParaCadastro, tvEsqueciSenha;
     private ProgressBar progressBar;
-    private FirebaseAuth mAuth;
+
+    // Centralizador de regras do Firebase
+    private AutenticacaoRepository autenticacaoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Inicialização do Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        // Inicialização do Repositório
+        autenticacaoRepository = new AutenticacaoRepository();
 
         // Inicialização dos componentes da UI
         inicializarComponentes();
@@ -45,9 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Verifica se o usuário já está logado
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
+        // Verifica se o ID do usuário já existe no escopo de sessão atual
+        if (autenticacaoRepository.obterIdUsuarioAtual() != null) {
             irParaHome();
         }
     }
@@ -69,26 +72,12 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        tvEsqueciSenha.setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
-            if (email.isEmpty()) {
-                Toast.makeText(this, "Informe seu e-mail para recuperar a senha", Toast.LENGTH_SHORT).show();
-            } else {
-                mAuth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(this, "E-mail de recuperação enviado!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(this, "Erro ao enviar e-mail de recuperação", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        });
+        tvEsqueciSenha.setOnClickListener(v -> recuperarSenha());
     }
 
     private void validarAutenticacao() {
-        String email = etEmail.getText().toString().trim();
-        String senha = etSenha.getText().toString().trim();
+        String email = Objects.requireNonNull(etEmail.getText()).toString().trim();
+        String senha = Objects.requireNonNull(etSenha.getText()).toString().trim();
 
         if (email.isEmpty()) {
             etEmail.setError("O e-mail é obrigatório");
@@ -109,24 +98,58 @@ public class LoginActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         btnEntrar.setEnabled(false);
 
-        mAuth.signInWithEmailAndPassword(email, senha)
-                .addOnCompleteListener(this, task -> {
-                    progressBar.setVisibility(View.GONE);
-                    btnEntrar.setEnabled(true);
+        // Delegação de responsabilidade para o repositório
+        autenticacaoRepository.logarUsuario(email, senha, new AutenticacaoRepository.RepositoryCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                progressBar.setVisibility(View.GONE);
+                btnEntrar.setEnabled(true);
+                Toast.makeText(LoginActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                irParaHome();
+            }
 
-                    if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                        irParaHome();
-                    } else {
-                        String erro = "Erro ao realizar login";
-                        try {
-                            throw task.getException();
-                        } catch (Exception e) {
-                            erro = "E-mail ou senha inválidos";
-                        }
-                        Toast.makeText(LoginActivity.this, erro, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onError(Exception e) {
+                progressBar.setVisibility(View.GONE);
+                btnEntrar.setEnabled(true);
+
+                String erroTratado;
+                if (e instanceof FirebaseAuthInvalidUserException) {
+                    erroTratado = "Este e-mail não está cadastrado.";
+                } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    erroTratado = "E-mail ou senha inválidos.";
+                } else {
+                    erroTratado = "Erro ao autenticar: " + e.getLocalizedMessage();
+                }
+                Toast.makeText(LoginActivity.this, erroTratado, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void recuperarSenha() {
+        String email = Objects.requireNonNull(etEmail.getText()).toString().trim();
+        if (email.isEmpty()) {
+            etEmail.setError("Informe seu e-mail para recuperar a senha");
+            etEmail.requestFocus();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Chamada direta para o método auxiliar que adicionaremos ao repositório
+        autenticacaoRepository.recuperarSenhaEmail(email, new AutenticacaoRepository.RepositoryCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(LoginActivity.this, "E-mail de recuperação enviado com sucesso!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(LoginActivity.this, "Erro ao enviar e-mail: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void irParaHome() {

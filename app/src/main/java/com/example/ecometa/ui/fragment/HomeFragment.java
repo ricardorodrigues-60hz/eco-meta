@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.ecometa.R;
-import com.example.ecometa.repository.EcoMetaRepository;
+import com.example.ecometa.repository.AutenticacaoRepository;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
         tvCO2 = view.findViewById(R.id.tvCO2);
         progressLevel = view.findViewById(R.id.progressLevel);
 
-        ViewModelFactory factory = new ViewModelFactory(new EcoMetaRepository());
+        ViewModelFactory factory = new ViewModelFactory(new AutenticacaoRepository());
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
 
         setupObservers();

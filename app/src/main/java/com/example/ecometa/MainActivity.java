@@ -6,21 +6,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import com.example.ecometa.repository.AutenticacaoRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * Camada: View (Activity Principal)
- * Responsável por configurar o Navigation Component e o BottomNavigationView em Java.
- */
+
+ // configura o Navigation Component e o BottomNavigationView
+
 public class MainActivity extends AppCompatActivity {
+
+    private AutenticacaoRepository autenticacaoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Verifica se o usuário está autenticado antes de carregar o layout
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        // Inicializa o repositório que centraliza as checagens do Firebase
+        autenticacaoRepository = new AutenticacaoRepository();
+
+        // 💡 Utiliza o repositório para verificar a sessão ativa de forma desacoplada
+        if (autenticacaoRepository.obterIdUsuarioAtual() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();

@@ -9,20 +9,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ecometa.model.Usuario;
+import com.example.ecometa.repository.AutenticacaoRepository;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
 /**
- * ctivity de Cadastro
- * Responsável pela criação de novos usuários no Firebase Auth e Firestore.
+ * Activity de Cadastro
+ * Coleta os dados da UI e delega a criação de conta para o AutenticacaoRepository.
  */
 public class CadastroActivity extends AppCompatActivity {
 
@@ -30,18 +28,15 @@ public class CadastroActivity extends AppCompatActivity {
     private MaterialButton btnCriarConta;
     private TextView tvVoltarLogin;
     private ProgressBar progressBar;
-    
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private AutenticacaoRepository autenticacaoRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
-        // Inicialização do Firebase
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        // Inicialização do Repositório Central de Autenticação
+        autenticacaoRepository = new AutenticacaoRepository();
 
         // Inicialização dos componentes da UI
         inicializarComponentes();
@@ -82,6 +77,12 @@ public class CadastroActivity extends AppCompatActivity {
             return;
         }
 
+        if (email.contains(" ")) {
+            etEmail.setError("O e-mail não pode conter espaços");
+            etEmail.requestFocus();
+            return;
+        }
+
         if (senha.isEmpty()) {
             etSenha.setError("A senha é obrigatória");
             etSenha.requestFocus();
@@ -94,55 +95,43 @@ public class CadastroActivity extends AppCompatActivity {
             return;
         }
 
-        criarUsuarioAuth(nome, email, senha);
+        // Executa o fluxo enviando os dados encapsulados para o repositório
+        realizarCadastroNoRepositorio(nome, email, senha);
     }
 
-    private void criarUsuarioAuth(String nome, String email, String senha) {
+    private void realizarCadastroNoRepositorio(String nome, String email, String senha) {
         progressBar.setVisibility(View.VISIBLE);
         btnCriarConta.setEnabled(false);
 
-        mAuth.createUserWithEmailAndPassword(email, senha)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                        salvarUsuarioFirestore(userId, nome, email);
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        btnCriarConta.setEnabled(true);
+        // Chamamos o método síncrono/atômico que criamos no repositório refatorado
+        autenticacaoRepository.cadastrarUsuario(nome, email, senha, new AutenticacaoRepository.RepositoryCallback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(CadastroActivity.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
+                irParaHome();
+            }
 
-                        String erro;
-                        try {
-                            throw Objects.requireNonNull(task.getException());
-                        } catch (FirebaseAuthWeakPasswordException e) {
-                            erro = "Digite uma senha mais forte";
-                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                            erro = "E-mail inválido";
-                        } catch (FirebaseAuthUserCollisionException e) {
-                            erro = "Esta conta já existe";
-                        } catch (Exception e) {
-                            erro = "Erro ao cadastrar usuário: " + e.getMessage();
-                        }
-                        Toast.makeText(CadastroActivity.this, erro, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+            @Override
+            public void onError(Exception e) {
+                progressBar.setVisibility(View.GONE);
+                btnCriarConta.setEnabled(true);
 
-    private void salvarUsuarioFirestore(String userId, String nome, String email) {
-        Usuario usuario = new Usuario(userId, nome, email);
+                String erroTratado;
+                // Tratamento detalhado de exceções vindas do Firebase Auth
+                if (e instanceof FirebaseAuthWeakPasswordException) {
+                    erroTratado = "Digite uma senha mais forte (mínimo 6 caracteres).";
+                } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    erroTratado = "O formato do e-mail inserido é inválido.";
+                } else if (e instanceof FirebaseAuthUserCollisionException) {
+                    erroTratado = "Este endereço de e-mail já está cadastrado.";
+                } else {
+                    erroTratado = "Erro no cadastro: " + e.getLocalizedMessage();
+                }
 
-        db.collection("usuarios")
-                .document(userId)
-                .set(usuario)
-                .addOnSuccessListener(aVoid -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(CadastroActivity.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
-                    irParaHome();
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    btnCriarConta.setEnabled(true);
-                    Toast.makeText(CadastroActivity.this, "Erro ao salvar dados: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+                Toast.makeText(CadastroActivity.this, erroTratado, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void irParaHome() {

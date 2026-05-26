@@ -3,12 +3,12 @@ package com.example.ecometa.viewmodel;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.ecometa.repository.EcoMetaRepository;
+import com.example.ecometa.repository.AutenticacaoRepository;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
-    private final EcoMetaRepository repository;
+    private final AutenticacaoRepository repository;
 
-    public ViewModelFactory(EcoMetaRepository repository) {
+    public ViewModelFactory(AutenticacaoRepository repository) {
         this.repository = repository;
     }
 
