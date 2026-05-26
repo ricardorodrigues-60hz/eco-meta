@@ -102,8 +102,19 @@
                         android:gravity="center"
                         android:padding="16dp"
                         android:orientation="vertical">
-                        <TextView android:text="EcoPoints" android:textSize="12sp"/>
-                        <TextView android:id="@+id/tvEcoPoints" android:text="1,250" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/eco_green_primary"/>
+                        <TextView 
+                            android:text="EcoPoints" 
+                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                             android:layout_width="wrap_content"/>
+                        <TextView 
+                            android:id="@+id/tvEcoPoints" 
+                            android:text="1,250" 
+                            android:textStyle="bold" 
+                            android:textSize="18sp" 
+                            android:textColor="@color/eco_green_primary" 
+                            android:layout_height="wrap_content" 
+                            android:layout_width="wrap_content"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -120,8 +131,19 @@
                         android:gravity="center"
                         android:padding="16dp"
                         android:orientation="vertical">
-                        <TextView android:text="CO2 Poupatdo" android:textSize="12sp"/>
-                        <TextView android:id="@+id/tvCO2" android:text="12.5 kg" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/eco_blue"/>
+                        <TextView
+                            android:text="CO2 Poupatdo"
+                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"/>
+                        <TextView
+                            android:id="@+id/tvCO2"
+                            android:text="12.5 kg" 
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="@color/eco_blue"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
