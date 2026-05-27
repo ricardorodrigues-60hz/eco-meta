@@ -2,6 +2,8 @@ package com.example.ecometa.repository;
 
 import androidx.annotation.NonNull;
 import com.example.ecometa.model.Atividade;
+import com.example.ecometa.model.ConquistaUsuario;
+import com.example.ecometa.model.Desafio;
 import com.example.ecometa.model.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -204,6 +206,23 @@ public class AutenticacaoRepository {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     callback.onSuccess(queryDocumentSnapshots.toObjects(Usuario.class));
                 })
+                .addOnFailureListener(callback::onError);
+    }
+
+    // 1. Busca todos os desafios existentes no sistema
+    public void obterTodosDesafios(RepositoryCallback<List<Desafio>> callback) {
+        db.collection("desafios")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> callback.onSuccess(queryDocumentSnapshots.toObjects(Desafio.class)))
+                .addOnFailureListener(callback::onError);
+    }
+
+    // 2. Busca apenas as conquistas que o usuário atual já liberou
+    public void obterConquistasDoUsuario(String userId, RepositoryCallback<List<ConquistaUsuario>> callback) {
+        db.collection("conquistas_usuario")
+                .whereEqualTo("user_id", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> callback.onSuccess(queryDocumentSnapshots.toObjects(ConquistaUsuario.class)))
                 .addOnFailureListener(callback::onError);
     }
 }

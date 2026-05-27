@@ -66,4 +66,42 @@ public class EcoMetaViewModel extends ViewModel {
             public void onError(Exception e) { _erro.setValue(e.getMessage()); }
         });
     }
+
+    private final MutableLiveData<List<DesafioStatus>> _desafiosStatus = new MutableLiveData<>();
+    public final LiveData<List<DesafioStatus>> desafiosStatus = _desafiosStatus;
+
+    public void carregarDesafiosEConquistas(String userId) {
+        repository.obterTodosDesafios(new AutenticacaoRepository.RepositoryCallback<List<Desafio>>() {
+            @Override
+            public void onSuccess(List<Desafio> listaDesafios) {
+
+                repository.obterConquistasDoUsuario(userId, new AutenticacaoRepository.RepositoryCallback<List<ConquistaUsuario>>() {
+                    @Override
+                    public void onSuccess(List<ConquistaUsuario> listaConquistas) {
+                        java.util.List<DesafioStatus> listaFinal = new java.util.ArrayList<>();
+
+                        // Cria um set com os IDs dos desafios já conquistados para busca rápida
+                        java.util.Set<String> idsConquistados = new java.util.HashSet<>();
+                        for (ConquistaUsuario c : listaConquistas) {
+                            idsConquistados.add(c.getId_desafio());
+                        }
+
+                        // Cruza os dados
+                        for (Desafio d : listaDesafios) {
+                            boolean foiConquistado = idsConquistados.contains(d.getId_desafio());
+                            listaFinal.add(new DesafioStatus(d, foiConquistado));
+                        }
+
+                        _desafiosStatus.setValue(listaFinal);
+                    }
+
+                    @Override
+                    public void onError(Exception e) { _erro.setValue(e.getMessage()); }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) { _erro.setValue(e.getMessage()); }
+        });
+    }
 }
