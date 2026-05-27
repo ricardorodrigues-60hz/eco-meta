@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
-import com.example.ecometa.adapter.AtividadeAdapter; // 💡 Ajustado para o nome da sua classe de Adapter
+import com.example.ecometa.ui.adapter.AtividadeAdapter;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
 

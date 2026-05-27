@@ -1,4 +1,4 @@
-package com.example.ecometa.adapter;
+package com.example.ecometa.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
