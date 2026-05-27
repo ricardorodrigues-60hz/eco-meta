@@ -28,7 +28,7 @@ public class ChallengesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_challenges, container, false);
 
-        rvChallenges = view.findViewById(R.id.rvChallenges); // Verifique se essa ID bate com o seu fragment_challenges.xml
+        rvChallenges = view.findViewById(R.id.rvChallenges);
         rvChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
 
         repository = new AutenticacaoRepository();

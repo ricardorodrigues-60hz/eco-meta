@@ -1,20 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-    <TextView
-        android:layout_width="wrap_content"
+    android:background="@color/eco_surface">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ranking"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/eco_text_primary"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="O ranking global está sendo processado."
-        android:layout_marginTop="32dp"
-        android:layout_gravity="center"/>
-</LinearLayout>
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Header Verde -->
+            <View
+                android:id="@+id/headerBackground"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@drawable/bg_header_home"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTitleRanking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Ranking"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Compare seu progresso"
+                android:textColor="#E0F2F1"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitleRanking" />
+
+            <!-- Tab Selector -->
+            <LinearLayout
+                android:id="@+id/layoutTabs"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="120dp"
+                android:background="@drawable/bg_tab_container"
+                android:orientation="horizontal"
+                android:padding="6dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_tab_selected"
+                    android:gravity="center"
+                    android:text="Ranking"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_eco"
+                    app:drawableTint="@color/white"
+                    android:paddingStart="16dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Gráficos"
+                    android:textColor="@color/eco_text_secondary"
+                    app:drawableStartCompat="@drawable/ic_history"
+                    app:drawableTint="@color/eco_text_secondary"
+                    android:paddingStart="16dp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="80dp">
+
+            <!-- Podium Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPodium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp"
+                    android:padding="16dp">
+
+                    <!-- Top 1 (Maria) -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivPodium1"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginBottom="8dp"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_launcher_foreground"
+                        app:layout_constraintBottom_toTopOf="@id/barGold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:shapeAppearanceOverlay="@style/CircleImage"
+                        app:strokeColor="#F1C40F"
+                        app:strokeWidth="3dp" />
+
+                    <View
+                        android:id="@+id/barGold"
+                        android:layout_width="70dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/bg_podium_gold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3250"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/barGold"
+                        app:layout_constraintEnd_toEndOf="@id/barGold"
+                        app:layout_constraintStart_toStartOf="@id/barGold"
+                        app:layout_constraintTop_toTopOf="@id/barGold" />
+
+                    <!-- Top 2 (Pedro) -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivPodium2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="8dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_launcher_foreground"
+                        app:layout_constraintBottom_toTopOf="@id/barSilver"
+                        app:layout_constraintEnd_toStartOf="@id/ivPodium1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:shapeAppearanceOverlay="@style/CircleImage"
+                        app:strokeColor="#BDC3C7"
+                        app:strokeWidth="2dp" />
+
+                    <View
+                        android:id="@+id/barSilver"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_podium_silver"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/ivPodium2"
+                        app:layout_constraintStart_toStartOf="@id/ivPodium2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2890"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/barSilver"
+                        app:layout_constraintEnd_toEndOf="@id/barSilver"
+                        app:layout_constraintStart_toStartOf="@id/barSilver"
+                        app:layout_constraintTop_toTopOf="@id/barSilver" />
+
+                    <!-- Top 3 (Ana) -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivPodium3"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="8dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_launcher_foreground"
+                        app:layout_constraintBottom_toTopOf="@id/barBronze"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivPodium1"
+                        app:shapeAppearanceOverlay="@style/CircleImage"
+                        app:strokeColor="#D35400"
+                        app:strokeWidth="2dp" />
+
+                    <View
+                        android:id="@+id/barBronze"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_podium_bronze"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/ivPodium3"
+                        app:layout_constraintStart_toStartOf="@id/ivPodium3" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2640"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/barBronze"
+                        app:layout_constraintEnd_toEndOf="@id/barBronze"
+                        app:layout_constraintStart_toStartOf="@id/barBronze"
+                        app:layout_constraintTop_toTopOf="@id/barBronze" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvTitleGeneral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="Classificação Geral"
+                android:textColor="@color/eco_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardPodium" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRanking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/tvTitleGeneral"
+                tools:listitem="@layout/item_ranking" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

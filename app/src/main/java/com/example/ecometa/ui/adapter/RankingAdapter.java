@@ -30,10 +30,23 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
     public void onBindViewHolder(@NonNull RankingViewHolder holder, int position) {
         Usuario usuario = listaUsuarios.get(position);
 
-        holder.tvPosicao.setText(String.format(Locale.getDefault(), "%dº", position + 1));
+        holder.tvPosicao.setText(String.valueOf(position + 1));
         holder.tvNome.setText(usuario.getNome());
-        holder.tvNivel.setText(usuario.getNivel());
-        holder.tvPontos.setText(String.format(Locale.getDefault(), "%d pts", usuario.getEco_points()));
+        holder.tvNivel.setText(String.format(Locale.getDefault(), "%d EcoPoints", usuario.getEco_points()));
+        
+        // Lógica de Medalhas
+        if (position == 0) {
+            holder.ivMedal.setVisibility(View.VISIBLE);
+            holder.ivMedal.setImageResource(R.drawable.ic_medal_gold);
+        } else if (position == 1) {
+            holder.ivMedal.setVisibility(View.VISIBLE);
+            holder.ivMedal.setImageResource(R.drawable.ic_medal_silver);
+        } else if (position == 2) {
+            holder.ivMedal.setVisibility(View.VISIBLE);
+            holder.ivMedal.setImageResource(R.drawable.ic_medal_bronze);
+        } else {
+            holder.ivMedal.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -43,6 +56,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
 
     static class RankingViewHolder extends RecyclerView.ViewHolder {
         TextView tvPosicao, tvNome, tvNivel, tvPontos;
+        android.widget.ImageView ivMedal;
 
         public RankingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -50,6 +64,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
             tvNome = itemView.findViewById(R.id.tvNomeUsuario);
             tvNivel = itemView.findViewById(R.id.tvNivelUsuario);
             tvPontos = itemView.findViewById(R.id.tvPontosRanking);
+            ivMedal = itemView.findViewById(R.id.ivMedal);
         }
     }
 }

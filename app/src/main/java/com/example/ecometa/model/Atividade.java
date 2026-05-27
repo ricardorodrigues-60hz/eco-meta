@@ -14,7 +14,7 @@ public class Atividade {
     private String tipo_transporte;
     private double distancia_km;
     private double co2_evitado;
-    private int points_earned; // 💡
+    private int points_earned;
     private Timestamp data;
 
 
@@ -80,4 +80,5 @@ public class Atividade {
     public void setData(Timestamp data) {
         this.data = data;
     }
+
 }

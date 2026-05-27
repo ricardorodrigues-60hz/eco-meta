@@ -4,10 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.ecometa.model.Atividade;
+import com.example.ecometa.model.ConquistaUsuario;
+import com.example.ecometa.model.Desafio;
+import com.example.ecometa.model.DesafioStatus;
 import com.example.ecometa.model.Usuario;
 import com.example.ecometa.repository.AutenticacaoRepository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Camada: ViewModel
@@ -50,9 +56,39 @@ public class EcoMetaViewModel extends ViewModel {
         nova.setDistancia_km(distancia);
         nova.setData(com.google.firebase.Timestamp.now());
 
+        // Calculo do pontos
+        int pontosPorKm;
+        switch (tipo.toLowerCase()) {
+            case "caminhada":
+                pontosPorKm = 15;
+                break;
+            case "bicicleta":
+                pontosPorKm = 10;
+                break;
+            case "metrô":
+            case "ônibus":
+                pontosPorKm = 5;
+                break;
+            default:
+                pontosPorKm = 0;
+                break;
+        }
+
+        // Calcula o total de pontos da atividade (arredondando para número inteiro)
+        int pontosGanhos = (int) (distancia * pontosPorKm);
+        nova.setPoints_earned(pontosGanhos);
+
+        // Envia para o repositório salvar no banco com os pontos calculados
         repository.registrarAtividade(nova, new AutenticacaoRepository.RepositoryCallback<Void>() {
-            @Override public void onSuccess(Void result) { carregarDadosUsuario(userId); carregarAtividades(userId); }
-            @Override public void onError(Exception e) { _erro.setValue(e.getMessage()); }
+            @Override
+            public void onSuccess(Void result) {
+                carregarDadosUsuario(userId);
+                carregarAtividades(userId);
+            }
+            @Override
+            public void onError(Exception e) {
+                _erro.setValue(e.getMessage());
+            }
         });
     }
     private final MutableLiveData<List<Usuario>> _ranking = new MutableLiveData<>();
@@ -78,10 +114,10 @@ public class EcoMetaViewModel extends ViewModel {
                 repository.obterConquistasDoUsuario(userId, new AutenticacaoRepository.RepositoryCallback<List<ConquistaUsuario>>() {
                     @Override
                     public void onSuccess(List<ConquistaUsuario> listaConquistas) {
-                        java.util.List<DesafioStatus> listaFinal = new java.util.ArrayList<>();
+                        List<DesafioStatus> listaFinal = new ArrayList<>();
 
                         // Cria um set com os IDs dos desafios já conquistados para busca rápida
-                        java.util.Set<String> idsConquistados = new java.util.HashSet<>();
+                        Set<String> idsConquistados = new HashSet<>();
                         for (ConquistaUsuario c : listaConquistas) {
                             idsConquistados.add(c.getId_desafio());
                         }

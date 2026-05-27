@@ -1,62 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:background="#FAFAFA">
+    android:background="@color/eco_surface"
+    android:padding="20dp">
+
+    <!-- Botão Fechar -->
+    <ImageView
+        android:id="@+id/btnClose"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_add"
+        android:rotation="45"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/eco_text_secondary" />
 
     <TextView
+        android:id="@+id/tvTitleRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registrar Trajeto"
-        android:textSize="24sp"
+        android:layout_marginTop="8dp"
+        android:text="Registrar Deslocamento"
+        android:textColor="@color/eco_text_primary"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:textColor="#2E7D32"
-        android:layout_marginBottom="24dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tvLabelTransport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selecione o Meio de Transporte:"
+        android:layout_marginTop="32dp"
+        android:text="Modo de Transporte"
+        android:textColor="@color/eco_text_primary"
         android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleRegister" />
 
-    <Spinner
-        android:id="@+id/spinnerTransporte"
+    <!-- Grid de Transportes -->
+    <GridLayout
+        android:id="@+id/gridTransport"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:entries="@array/transportes_array"
-        android:layout_marginBottom="20dp"
-        android:background="@android:drawable/btn_dropdown"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:columnCount="2"
+        android:rowCount="2"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelTransport">
+
+        <!-- Caminhada -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardWalk"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_card_transport"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivWalk"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_walk" />
+
+                <TextView
+                    android:id="@+id/tvWalk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Caminhada"
+                    android:textColor="@color/eco_text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Bicicleta -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBike"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_card_transport"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivBike"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_bike" />
+
+                <TextView
+                    android:id="@+id/tvBike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Bicicleta"
+                    android:textColor="@color/eco_text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Ônibus -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBus"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_card_transport"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivBus"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_bus" />
+
+                <TextView
+                    android:id="@+id/tvBus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Ônibus"
+                    android:textColor="@color/eco_text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Metrô -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMetro"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="6dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_card_transport"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivMetro"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_metro" />
+
+                <TextView
+                    android:id="@+id/tvMetro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Metrô"
+                    android:textColor="@color/eco_text_secondary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </GridLayout>
 
     <TextView
+        android:id="@+id/tvLabelDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Distância Percorrida (em km):"
+        android:layout_marginTop="24dp"
+        android:text="Distância percorrida (km)"
+        android:textColor="@color/eco_text_primary"
         android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gridTransport" />
 
     <EditText
         android:id="@+id/etDistancia"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Ex: 12.5"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_field"
+        android:hint="0.0"
         android:inputType="numberDecimal"
-        android:paddingHorizontal="12dp"
-        android:background="@android:drawable/editbox_background_normal"
-        android:layout_marginBottom="24dp"/>
+        android:paddingHorizontal="16dp"
+        android:textColor="@color/eco_text_primary"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelDistance" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegistrarAtividade"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Salvar Atividade"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:text="Confirmar e Salvar Trajeto"
+        android:textAllCaps="false"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:backgroundTint="#2E7D32"
-        app:cornerRadius="8dp"/>
+        app:backgroundTint="#A5D6A7"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-</LinearLayout>
+    <!-- ID preservado, mas invisível para manter compatibilidade com Spinner -->
+    <Spinner
+        android:id="@+id/spinnerTransporte"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:entries="@array/transportes_array" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

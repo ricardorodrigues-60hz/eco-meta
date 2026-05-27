@@ -25,6 +25,7 @@ public class RegistrarAtividadeFragment extends Fragment {
     private Spinner spinnerTransporte;
     private EditText etDistancia;
     private Button btnRegistrar;
+    private com.google.android.material.card.MaterialCardView cardWalk, cardBike, cardBus, cardMetro;
 
     @Nullable
     @Override
@@ -36,6 +37,13 @@ public class RegistrarAtividadeFragment extends Fragment {
         etDistancia = view.findViewById(R.id.etDistancia);
         btnRegistrar = view.findViewById(R.id.btnRegistrarAtividade);
 
+        cardWalk = view.findViewById(R.id.cardWalk);
+        cardBike = view.findViewById(R.id.cardBike);
+        cardBus = view.findViewById(R.id.cardBus);
+        cardMetro = view.findViewById(R.id.cardMetro);
+
+        setupTransportSelection();
+
         // Inicializa arquitetura MVVM idêntica aos seus outros fragments
         repository = new AutenticacaoRepository();
         ViewModelFactory factory = new ViewModelFactory(repository);
@@ -43,7 +51,38 @@ public class RegistrarAtividadeFragment extends Fragment {
 
         btnRegistrar.setOnClickListener(v -> executarRegistro());
 
+        view.findViewById(R.id.btnClose).setOnClickListener(v -> {
+            if (getActivity() != null) getActivity().onBackPressed();
+        });
+
         return view;
+    }
+
+    private void setupTransportSelection() {
+        View.OnClickListener listener = v -> {
+            cardWalk.setSelected(false);
+            cardBike.setSelected(false);
+            cardBus.setSelected(false);
+            cardMetro.setSelected(false);
+
+            v.setSelected(true);
+            
+            // Atualiza o Spinner baseado no card clicado (Ordem: Bicicleta, Caminhada, Ônibus, Metrô)
+            if (v.getId() == R.id.cardBike) spinnerTransporte.setSelection(0);
+            else if (v.getId() == R.id.cardWalk) spinnerTransporte.setSelection(1);
+            else if (v.getId() == R.id.cardBus) spinnerTransporte.setSelection(2);
+            else if (v.getId() == R.id.cardMetro) spinnerTransporte.setSelection(3);
+
+            // Habilita visualmente o botão (Verde Forte)
+            btnRegistrar.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                androidx.core.content.ContextCompat.getColor(getContext(), R.color.eco_green_primary)
+            ));
+        };
+
+        cardWalk.setOnClickListener(listener);
+        cardBike.setOnClickListener(listener);
+        cardBus.setOnClickListener(listener);
+        cardMetro.setOnClickListener(listener);
     }
 
     private void executarRegistro() {

@@ -36,16 +36,20 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Ch
 
         holder.tvTitulo.setText(desafio.getTitulo());
         holder.tvDescricao.setText(desafio.getDescricao());
-        holder.tvRecompensa.setText(String.format(Locale.getDefault(), "Bônus: +%d EcoPoints", desafio.getEco_points_recompensa()));
+        holder.tvRecompensa.setText(String.format(Locale.getDefault(), "+%d EcoPoints", desafio.getEco_points_recompensa()));
 
         if (status.isConquistado()) {
             holder.tvSelo.setText("CONCLUÍDO");
-            holder.tvSelo.setBackgroundColor(Color.parseColor("#2E7D32")); // Verde Eco
-            holder.cardDesafio.setCardBackgroundColor(Color.parseColor("#E8F5E9")); // Fundo esverdeado suave
+            holder.tvSelo.setTextColor(Color.parseColor("#27AE60"));
+            holder.tvSelo.setBackgroundResource(R.drawable.bg_badge_unlocked);
+            holder.ivIcon.setBackgroundColor(Color.parseColor("#E8F5E9"));
+            holder.ivIcon.setColorFilter(Color.parseColor("#27AE60"));
         } else {
-            holder.tvSelo.setText("EM ABERTO");
-            holder.tvSelo.setBackgroundColor(Color.parseColor("#FFA000")); // Amarelo/Laranja de progresso
-            holder.cardDesafio.setCardBackgroundColor(Color.WHITE);
+            holder.tvSelo.setText("BLOQUEADO");
+            holder.tvSelo.setTextColor(Color.parseColor("#7F8C8D"));
+            holder.tvSelo.setBackgroundResource(R.drawable.bg_badge_locked);
+            holder.ivIcon.setBackgroundColor(Color.parseColor("#F5F6F7"));
+            holder.ivIcon.setColorFilter(Color.parseColor("#BDC3C7"));
         }
     }
 
@@ -55,6 +59,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Ch
     static class ChallengeViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitulo, tvDescricao, tvRecompensa, tvSelo;
         CardView cardDesafio;
+        android.widget.ImageView ivIcon;
 
         public ChallengeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,6 +68,7 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Ch
             tvRecompensa = itemView.findViewById(R.id.tvRecompensaDesafio);
             tvSelo = itemView.findViewById(R.id.tvStatusSelo);
             cardDesafio = itemView.findViewById(R.id.cardDesafio);
+            ivIcon = itemView.findViewById(R.id.ivChallengeIcon);
         }
     }
 }

@@ -53,9 +53,18 @@ public class HistoryFragment extends Fragment {
     private void setupObservers() {
         viewModel.atividades.observe(getViewLifecycleOwner(), atividades -> {
             if (atividades != null) {
-
+                android.util.Log.d("ECO_META_TESTE", "Total de atividades trazidas do banco: " + atividades.size());
                 rvHistory.setAdapter(new AtividadeAdapter(atividades));
             }
         });
+
+        // Adicione a observação de erro para ver se o Firebase está rejeitando algo
+        viewModel.erro.observe(getViewLifecycleOwner(), mensagemErro -> {
+            if (mensagemErro != null) {
+                android.util.Log.e("ECO_META_ERRO", "Erro na ViewModel: " + mensagemErro);
+                Toast.makeText(getContext(), "Erro no banco: " + mensagemErro, Toast.LENGTH_LONG).show();
+            }
+        });
     }
+
 }
