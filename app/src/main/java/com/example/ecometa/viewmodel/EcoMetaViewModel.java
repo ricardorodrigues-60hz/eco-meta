@@ -55,4 +55,15 @@ public class EcoMetaViewModel extends ViewModel {
             @Override public void onError(Exception e) { _erro.setValue(e.getMessage()); }
         });
     }
+    private final MutableLiveData<List<Usuario>> _ranking = new MutableLiveData<>();
+    public final LiveData<List<Usuario>> ranking = _ranking;
+
+    public void carregarRanking() {
+        repository.obterRankingUsuarios(new AutenticacaoRepository.RepositoryCallback<List<Usuario>>() {
+            @Override
+            public void onSuccess(List<Usuario> result) { _ranking.setValue(result); }
+            @Override
+            public void onError(Exception e) { _erro.setValue(e.getMessage()); }
+        });
+    }
 }

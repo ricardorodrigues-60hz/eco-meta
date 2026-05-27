@@ -195,4 +195,15 @@ public class AutenticacaoRepository {
                     }
                 });
     }
+
+    public void obterRankingUsuarios(@NonNull RepositoryCallback<List<Usuario>> callback) {
+        db.collection(COLECAO_USUARIOS)
+                .orderBy("eco_points", Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    callback.onSuccess(queryDocumentSnapshots.toObjects(Usuario.class));
+                })
+                .addOnFailureListener(callback::onError);
+    }
 }

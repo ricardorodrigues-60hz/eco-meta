@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">EcoMeta</string>
 </resources>
+<string-array name="transportes_array">
+<item>Bicicleta</item>
+<item>Caminhada</item>
+<item>Ônibus</item>
+<item>Metrô</item>
+</string-array>

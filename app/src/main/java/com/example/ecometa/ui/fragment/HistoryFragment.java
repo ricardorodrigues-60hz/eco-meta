@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
-import com.example.ecometa.ui.adapter.ActivityAdapter;
+import com.example.ecometa.adapter.AtividadeAdapter; // 💡 Ajustado para o nome da sua classe de Adapter
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
 
@@ -20,6 +21,7 @@ public class HistoryFragment extends Fragment {
 
     private EcoMetaViewModel viewModel;
     private RecyclerView rvHistory;
+    private AutenticacaoRepository repository; //
 
     @Nullable
     @Override
@@ -29,11 +31,21 @@ public class HistoryFragment extends Fragment {
         rvHistory = view.findViewById(R.id.rvHistory);
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ViewModelFactory factory = new ViewModelFactory(new AutenticacaoRepository());
+
+        repository = new AutenticacaoRepository();
+
+        ViewModelFactory factory = new ViewModelFactory(repository);
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
 
         setupObservers();
-        viewModel.carregarAtividades("user_123");
+
+
+        String userIdReal = repository.obterIdUsuarioAtual();
+        if (userIdReal != null) {
+            viewModel.carregarAtividades(userIdReal);
+        } else {
+            Toast.makeText(getContext(), "Erro: Usuário não autenticado.", Toast.LENGTH_SHORT).show();
+        }
 
         return view;
     }
@@ -41,7 +53,8 @@ public class HistoryFragment extends Fragment {
     private void setupObservers() {
         viewModel.atividades.observe(getViewLifecycleOwner(), atividades -> {
             if (atividades != null) {
-                rvHistory.setAdapter(new ActivityAdapter(atividades));
+
+                rvHistory.setAdapter(new AtividadeAdapter(atividades));
             }
         });
     }
