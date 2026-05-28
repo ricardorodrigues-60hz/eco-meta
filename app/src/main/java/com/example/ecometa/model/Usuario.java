@@ -2,10 +2,6 @@ package com.example.ecometa.model;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
-/**
- * Modelo de dados para o Usuário.
- * Representa a estrutura exata do documento na coleção 'user' do Firestore.
- */
 @IgnoreExtraProperties
 public class Usuario {
     private String id_user;
@@ -24,8 +20,8 @@ public class Usuario {
         this.nome = nome;
         this.eco_points = eco_points;
         this.total_co2_poupado = total_co2_poupado;
-        this.nivel = "Brotinho"; // Nível inicial conforme a regra de gamificação do projeto
-        this.email = ""; // Evita NullPointerException se o e-mail for lido em algum adapter
+        this.nivel = "Brotinho";
+        this.email = "";
     }
 
     public String getId_user() {

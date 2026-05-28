@@ -15,10 +15,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Camada: ViewModel
- * Gerencia o estado da UI para as telas do EcoMeta.
- */
+
+ // Camada: ViewModel
+
 public class EcoMetaViewModel extends ViewModel {
     private final AutenticacaoRepository repository;
 
@@ -74,7 +73,7 @@ public class EcoMetaViewModel extends ViewModel {
                 break;
         }
 
-        // Calcula o total de pontos da atividade (arredondando para número inteiro)
+        // Calcula o total de pontos da atividade
         int pontosGanhos = (int) (distancia * pontosPorKm);
         nova.setPoints_earned(pontosGanhos);
 

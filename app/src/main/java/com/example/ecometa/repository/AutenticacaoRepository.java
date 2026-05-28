@@ -11,12 +11,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Repository Geral do Projeto EcoMeta
- * Gerencia centralizadamente a Autenticação (Firebase Auth) e a Persistência (Firestore).
+ * Gerencia centralizadamente a Autenticação e a Persistência
  */
 public class AutenticacaoRepository {
     private static final String TAG = "AutenticacaoRepository";
@@ -24,7 +23,6 @@ public class AutenticacaoRepository {
     private final FirebaseAuth mAuth;
     private final FirebaseFirestore db;
 
-    // 1. ALTERADO AQUI: De "usuarios" para "user"
     private static final String COLECAO_USUARIOS = "user";
     private static final String COLECAO_ATIVIDADES = "atividades";
 
@@ -210,7 +208,6 @@ public class AutenticacaoRepository {
                 .addOnFailureListener(callback::onError);
     }
 
-    // 1. Busca todos os desafios existentes no sistema
     public void obterTodosDesafios(RepositoryCallback<List<Desafio>> callback) {
         db.collection("desafios")
                 .get()
@@ -218,7 +215,6 @@ public class AutenticacaoRepository {
                 .addOnFailureListener(callback::onError);
     }
 
-    // 2. Busca apenas as conquistas que o usuário atual já liberou
     public void obterConquistasDoUsuario(String userId, RepositoryCallback<List<ConquistaUsuario>> callback) {
         db.collection("conquistas_usuario")
                 .whereEqualTo("user_id", userId)

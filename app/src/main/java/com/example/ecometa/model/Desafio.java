@@ -12,7 +12,6 @@ public class Desafio {
     private double meta_km;
     private int eco_points_recompensa;
 
-    // Construtor padrão obrigatório para o Firestore
     public Desafio() {}
 
     public Desafio(String id_desafio, String titulo, String descricao, String tipo_transporte, double meta_km, int eco_points_recompensa) {
