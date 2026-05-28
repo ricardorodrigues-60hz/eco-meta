@@ -45,11 +45,11 @@ public class ChallengesAdapter extends RecyclerView.Adapter<ChallengesAdapter.Ch
             holder.ivIcon.setBackgroundColor(Color.parseColor("#E8F5E9"));
             holder.ivIcon.setColorFilter(Color.parseColor("#27AE60"));
         } else {
-            holder.tvSelo.setText("BLOQUEADO");
-            holder.tvSelo.setTextColor(Color.parseColor("#7F8C8D"));
-            holder.tvSelo.setBackgroundResource(R.drawable.bg_badge_locked);
-            holder.ivIcon.setBackgroundColor(Color.parseColor("#F5F6F7"));
-            holder.ivIcon.setColorFilter(Color.parseColor("#BDC3C7"));
+            holder.tvSelo.setText("DISPONÍVEL");
+            holder.tvSelo.setTextColor(Color.parseColor("#27AE60"));
+            holder.tvSelo.setBackgroundResource(R.drawable.bg_badge_unlocked);
+            holder.ivIcon.setBackgroundColor(Color.parseColor("#E8F5E9"));
+            holder.ivIcon.setColorFilter(Color.parseColor("#27AE60"));
         }
     }
 

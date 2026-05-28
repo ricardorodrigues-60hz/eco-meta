@@ -1,6 +1,7 @@
 package com.example.ecometa.model;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.PropertyName;
 
 @IgnoreExtraProperties
 public class Desafio {
@@ -41,4 +42,10 @@ public class Desafio {
 
     public int getEco_points_recompensa() { return eco_points_recompensa; }
     public void setEco_points_recompensa(int eco_points_recompensa) { this.eco_points_recompensa = eco_points_recompensa; }
+
+    @PropertyName("eco_point_recompensa")
+    public int getEcoPointRecompensa() { return eco_points_recompensa; }
+
+    @PropertyName("eco_point_recompensa")
+    public void setEcoPointRecompensa(int ecoPointRecompensa) { this.eco_points_recompensa = ecoPointRecompensa; }
 }

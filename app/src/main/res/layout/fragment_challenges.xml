@@ -68,7 +68,8 @@
                     android:id="@+id/tvTotalChallenges"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12"
+                    android:text="0"
+                    tools:text="12"
                     android:textColor="@color/eco_green_primary"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -98,7 +99,8 @@
                     android:id="@+id/tvCompletedChallenges"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
+                    tools:text="4"
                     android:textColor="@color/eco_green_primary"
                     android:textSize="24sp"
                     android:textStyle="bold" />

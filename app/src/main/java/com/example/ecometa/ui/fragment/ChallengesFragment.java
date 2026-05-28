@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class ChallengesFragment extends Fragment {
 
     private EcoMetaViewModel viewModel;
     private RecyclerView rvChallenges;
+    private TextView tvTotalChallenges, tvCompletedChallenges;
     private AutenticacaoRepository repository;
 
     @Nullable
@@ -30,6 +32,9 @@ public class ChallengesFragment extends Fragment {
 
         rvChallenges = view.findViewById(R.id.rvChallenges);
         rvChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        tvTotalChallenges = view.findViewById(R.id.tvTotalChallenges);
+        tvCompletedChallenges = view.findViewById(R.id.tvCompletedChallenges);
 
         repository = new AutenticacaoRepository();
         ViewModelFactory factory = new ViewModelFactory(repository);
@@ -51,6 +56,16 @@ public class ChallengesFragment extends Fragment {
         viewModel.desafiosStatus.observe(getViewLifecycleOwner(), desafiosStatusList -> {
             if (desafiosStatusList != null) {
                 rvChallenges.setAdapter(new ChallengesAdapter(desafiosStatusList));
+
+                // Atualiza o cabeçalho dinamicamente
+                int totalDisponiveis = desafiosStatusList.size();
+                int totalConcluidos = 0;
+                for (com.example.ecometa.model.DesafioStatus ds : desafiosStatusList) {
+                    if (ds.isConquistado()) totalConcluidos++;
+                }
+
+                tvTotalChallenges.setText(String.valueOf(totalDisponiveis));
+                tvCompletedChallenges.setText(String.valueOf(totalConcluidos));
             }
         });
     }
