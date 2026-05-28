@@ -108,11 +108,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal"
             android:weightSum="2"
-            app:layout_constraintTop_toBottomOf="@id/cardUserProgress"
-            tools:layout_editor_absoluteX="20dp">
+            app:layout_constraintTop_toBottomOf="@id/cardUserProgress">
 
             <!-- Card EcoPoints -->
             <com.google.android.material.card.MaterialCardView
@@ -202,6 +201,19 @@
         </LinearLayout>
 
         <!-- Botão Registrar Novo Trajeto -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRegisterActivity"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:text="+ Registrar Novo Trajeto"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/eco_green_primary"
+            app:cornerRadius="16dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutStats" />
 
         <!-- Seção Atividades Recentes -->
 

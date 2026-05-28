@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://tools.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment"> <fragment
-    android:id="@+id/homeFragment"
-    android:name="com.example.ecometa.ui.fragment.HomeFragment"
-    android:label="Início"
-    tools:layout="@layout/fragment_home" />
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ecometa.ui.fragment.HomeFragment"
+        android:label="Início"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/historyFragment"
@@ -16,15 +18,21 @@
         tools:layout="@layout/fragment_history" />
 
     <fragment
-        android:id="@+id/registrarAtividadeFragment"
-        android:name="com.example.ecometa.ui.fragment.RegistrarAtividadeFragment"
-        android:label="Registrar Trajeto"
-        tools:layout="@layout/fragment_registrar_atividade" />
+        android:id="@+id/challengesFragment"
+        android:name="com.example.ecometa.ui.fragment.ChallengesFragment"
+        android:label="Desafios"
+        tools:layout="@layout/fragment_challenges" />
 
     <fragment
         android:id="@+id/rankingFragment"
         android:name="com.example.ecometa.ui.fragment.RankingFragment"
         android:label="Ranking"
         tools:layout="@layout/fragment_ranking" />
+
+    <fragment
+        android:id="@+id/registrarAtividadeFragment"
+        android:name="com.example.ecometa.ui.fragment.RegistrarAtividadeFragment"
+        android:label="Registrar Trajeto"
+        tools:layout="@layout/fragment_registrar_atividade" />
 
 </navigation>

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
@@ -33,6 +34,10 @@ public class HomeFragment extends Fragment {
         tvEcoPoints = view.findViewById(R.id.tvEcoPoints);
         tvCO2 = view.findViewById(R.id.tvCO2);
         progressLevel = view.findViewById(R.id.progressLevel);
+
+        view.findViewById(R.id.btnRegisterActivity).setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.registrarAtividadeFragment);
+        });
 
         // Inicializa o repositório
         repository = new AutenticacaoRepository();

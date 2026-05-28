@@ -11,6 +11,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -225,4 +226,6 @@ public class AutenticacaoRepository {
                 .addOnSuccessListener(queryDocumentSnapshots -> callback.onSuccess(queryDocumentSnapshots.toObjects(ConquistaUsuario.class)))
                 .addOnFailureListener(callback::onError);
     }
+
+
 }

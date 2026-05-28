@@ -1,51 +1,51 @@
-# EcoMeta - Sustentabilidade Urbana & Gamificação
+# EcoMeta 🌿
+### Transformando sustentabilidade em metas reais e gamificadas.
 
-O **EcoMeta** é um aplicativo nativo Android desenvolvido para incentivar a mobilidade sustentável. Ele monitora os deslocamentos diários do usuário e calcula a redução da pegada de carbono ($CO_2$) ao optar por meios de transporte limpos.
-
-## 🚀 Tecnologias Utilizadas
-
-- **Linguagem**: Java 11 (POO Clássica)
-- **Interface**: XML (Material Design 3 - ConstraintLayout, MaterialCardView)
-- **Navegação**: Navigation Component (Fragment-based)
-- **Arquitetura**: MVVM (Model-View-ViewModel) + Repository Pattern
-- **Backend**: [Firebase](https://firebase.google.com/) (Authentication & Firestore)
-- **Build System**: Gradle (Kotlin DSL) com Version Catalogs (`libs.versions.toml`)
-
-## 🏗️ Estrutura do Projeto
-
-```text
-com.example.ecometa
-├── model/           # Classes POJO e modelos do Firestore
-├── repository/      # Camada de abstração de dados e Callbacks
-├── viewmodel/       # Lógica de negócio e LiveData
-└── ui/
-    ├── fragment/    # Telas do aplicativo (Home, Histórico, etc)
-    └── adapter/     # Adapters para RecyclerView (Histórico)
-```
-
-## ⚙️ Configuração do Firebase
-
-Para compilar e rodar o projeto, siga os passos abaixo:
-
-1. Acesse o [Firebase Console](https://console.firebase.google.com/).
-2. Crie um novo projeto chamado `EcoMeta`.
-3. Adicione um app Android com o package name `com.example.ecometa`.
-4. Faça o download do arquivo `google-services.json`.
-5. Cole o arquivo no diretório: `app/`.
-6. No console do Firebase:
-    - Ative o **Firebase Authentication** (E-mail/Senha).
-    - Ative o **Cloud Firestore** em modo de teste ou produção.
-
-## 🌿 Regra de Cálculo Ambiental
-
-A fórmula principal utilizada para o cálculo do impacto é:
-$$E = d \times (f_{carro} - f_{escolhido})$$
-
-Onde:
-- **E**: Emissão evitada em kg de $CO_2$.
-- **d**: Distância percorrida em km.
-- **f_carro**: 0.120 (fator fixo do carro a combustão).
-- **f_escolhido**: Bicicleta (0.0), Caminhada (0.0), Ônibus (0.030), Metrô (0.040).
+**EcoMeta** é um aplicativo Android nativo desenvolvido para ajudar usuários a monitorarem sua pegada de carbono através do registro de deslocamentos diários. Ao incentivar o uso de meios de transporte sustentáveis (como caminhada e bicicleta), o app transforma hábitos ecológicos em uma experiência gamificada com níveis, recompensas e rankings competitivos.
 
 ---
-*Desenvolvido em Java/XML focado em estabilidade e performance nativa.*
+
+## 🚀 Stack Tecnológico
+*   **Linguagem:** Java
+*   **Arquitetura:** MVVM (Model-View-ViewModel)
+*   **Banco de Dados:** Firebase Firestore (Tempo real)
+*   **Navegação:** Jetpack Navigation Component
+*   **Interface:** Material Design 3 (Material Components)
+*   **Injeção/Gerenciamento de Estado:** LiveData & ViewModelProvider
+*   **Autenticação:** Firebase Auth
+
+---
+
+## ✨ Funcionalidades Principais
+*   📊 **Dashboard de Impacto:** Visualize seu nível de progresso, EcoPoints acumulados e total de CO₂ poupado.
+*   🚲 **Registro de Trajetos:** Interface intuitiva para registrar deslocamentos via caminhada, bicicleta, ônibus ou metrô.
+*   📜 **Histórico Detalhado:** Acompanhe todos os seus trajetos passados com cálculos dinâmicos de distância e economia de carbono.
+*   🏆 **Ranking Global:** Compare seu desempenho com outros usuários da comunidade EcoMeta.
+*   🎯 **Desafios e Conquistas:** Supere metas específicas para desbloquear selos e ganhar bônus de pontos.
+*   ☀️ **Interface Light Exclusive:** Design otimizado para clareza e frescor visual, focado na identidade da marca.
+
+---
+
+## 🛠️ Como rodar o projeto
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/seu-usuario/eco-meta.git
+    ```
+2.  **Abra no Android Studio:**
+    Certifique-se de estar usando a versão Flamingo ou superior.
+3.  **Configure o Firebase:**
+    - Crie um projeto no [Console do Firebase](https://console.firebase.google.com/).
+    - Adicione um app Android com o package name `com.example.ecometa`.
+    - Baixe o arquivo `google-services.json` e coloque-o na pasta `app/`.
+    - Ative o **Firestore Database** e o **Anonymous Authentication** (ou Email/Password).
+4.  **Execute o App:**
+    Selecione um emulador (API 30+) ou dispositivo físico e clique em **Run**.
+
+---
+
+## 👤 Desenvolvedor
+Desenvolvido como um projeto focado em sustentabilidade e boas práticas de arquitetura Android.
+
+---
+© 2026 EcoMeta Team. Todos os direitos reservados.

@@ -2,18 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/homeFragment" android:icon="@drawable/ic_home"
-        android:title="Início" />
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
 
     <item
-        android:id="@+id/registrarAtividadeFragment" android:icon="@drawable/ic_add"
-        android:title="Registrar" />
-
-    <item
-        android:id="@+id/historyFragment" android:icon="@drawable/ic_history"
+        android:id="@+id/historyFragment"
+        android:icon="@drawable/ic_history"
         android:title="Histórico" />
 
     <item
-        android:id="@+id/rankingFragment" android:icon="@drawable/ic_stars"
+        android:id="@+id/challengesFragment"
+        android:icon="@drawable/ic_trophy"
+        android:title="Desafios" />
+
+    <item
+        android:id="@+id/rankingFragment"
+        android:icon="@drawable/ic_stars"
         android:title="Ranking" />
 </menu>

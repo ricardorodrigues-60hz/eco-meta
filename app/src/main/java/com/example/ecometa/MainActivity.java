@@ -3,6 +3,7 @@ package com.example.ecometa;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Força o modo claro programaticamente
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         super.onCreate(savedInstanceState);
 
         // Inicializa o repositório que centraliza as checagens do Firebase
@@ -48,5 +52,7 @@ public class MainActivity extends AppCompatActivity {
             // 4. Conecta o NavController ao BottomNavigationView
             NavigationUI.setupWithNavController(navView, navController);
         }
+
+
     }
 }

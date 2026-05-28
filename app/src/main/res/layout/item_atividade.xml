@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingHorizontal="24dp"
+    android:paddingHorizontal="16dp"
     android:paddingVertical="4dp">
 
-    <!-- Header de Data (Opcional - Invisível por padrão) -->
+    <!-- Header de Data -->
     <LinearLayout
         android:id="@+id/layoutDateHeader"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/ic_calendar"
-            app:tint="@color/eco_green_primary" />
+            app:tint="#1B874B" />
 
         <TextView
             android:id="@+id/tvHeaderDate"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="19 Mai 2026"
-            android:textColor="@color/eco_text_primary"
+            android:textColor="#2C3E50"
             android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -42,7 +42,8 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
-        app:strokeColor="@color/light_gray"
+        app:cardBackgroundColor="#FFFFFF"
+        app:strokeColor="#E0E0E0"
         app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,9 +57,9 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/bg_circle_icon_light"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/ivActivityIcon"
@@ -69,7 +70,7 @@
                 app:layout_constraintEnd_toEndOf="@id/viewIconBg"
                 app:layout_constraintStart_toStartOf="@id/viewIconBg"
                 app:layout_constraintTop_toTopOf="@id/viewIconBg"
-                app:tint="@color/eco_green_primary" />
+                app:tint="#1B874B" />
 
             <!-- Textos Centrais -->
             <TextView
@@ -78,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="Bicicleta"
-                android:textColor="@color/eco_text_primary"
+                android:textColor="#2C3E50"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/layoutCO2"
@@ -88,7 +89,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@id/layoutCO2"
                 app:layout_constraintStart_toStartOf="@id/tvTipoTransporte"
@@ -98,23 +99,27 @@
                     android:id="@+id/tvDistancia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:text="5.2 km"
-                    android:textColor="@color/eco_text_secondary"
+                    android:textColor="#7F8C8D"
                     android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" • "
-                    android:textColor="@color/eco_text_secondary"
+                    android:textColor="#7F8C8D"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvDataAtividade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="none"
                     android:text="Hoje, 14:30"
-                    android:textColor="@color/eco_text_secondary"
+                    android:textColor="#7F8C8D"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -133,8 +138,8 @@
                     android:id="@+id/tvCo2Poupado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+1.2 kg"
-                    android:textColor="@color/eco_green_primary"
+                    tools:text="+1.2"
+                    android:textColor="#1B874B"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -142,11 +147,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="kg CO₂"
-                    android:textColor="@color/eco_text_secondary"
-                    android:textSize="10sp" />
+                    android:textColor="#7F8C8D"
+                    android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- ID preservado, mas invisível -->
             <TextView
                 android:id="@+id/tvPontosGanhos"
                 android:layout_width="0dp"

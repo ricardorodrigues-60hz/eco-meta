@@ -33,9 +33,8 @@ public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.Ativ
         Atividade atividade = listaAtividades.get(position);
 
         holder.tvTipo.setText(atividade.getTipo_transporte());
-        holder.tvDistancia.setText(String.format(Locale.getDefault(), "Distância: %.1f km", atividade.getDistancia_km()));
-        holder.tvCo2.setText(String.format(Locale.getDefault(), "CO₂ Evitado: %.2f kg", atividade.getCo2_evitado()));
-        holder.tvPontos.setText(String.format(Locale.getDefault(), "+%d EcoPoints", atividade.getPoints_earned()));
+        holder.tvDistancia.setText(String.format(Locale.getDefault(), "%.1f km", atividade.getDistancia_km()));
+        holder.tvCo2.setText(String.format(Locale.getDefault(), "+%.2f", atividade.getCo2_evitado()));
 
         if (atividade.getData() != null) {
             holder.tvData.setText(dateFormat.format(atividade.getData().toDate()));

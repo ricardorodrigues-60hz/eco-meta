@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class HistoryFragment extends Fragment {
 
     private EcoMetaViewModel viewModel;
     private RecyclerView rvHistory;
+    private TextView tvTotalTrajetos, tvSummaryDistancia, tvSummaryCO2;
     private AutenticacaoRepository repository; //
 
     @Nullable
@@ -30,6 +32,10 @@ public class HistoryFragment extends Fragment {
 
         rvHistory = view.findViewById(R.id.rvHistory);
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        tvTotalTrajetos = view.findViewById(R.id.tvTotalTrajetos);
+        tvSummaryDistancia = view.findViewById(R.id.tvSummaryDistancia);
+        tvSummaryCO2 = view.findViewById(R.id.tvSummaryCO2);
 
 
         repository = new AutenticacaoRepository();
@@ -55,6 +61,21 @@ public class HistoryFragment extends Fragment {
             if (atividades != null) {
                 android.util.Log.d("ECO_META_TESTE", "Total de atividades trazidas do banco: " + atividades.size());
                 rvHistory.setAdapter(new AtividadeAdapter(atividades));
+
+                // Cálculo do Resumo Dinâmico
+                int totalTrajetos = atividades.size();
+                double kmTotal = 0;
+                double co2Total = 0;
+
+                for (com.example.ecometa.model.Atividade a : atividades) {
+                    kmTotal += a.getDistancia_km();
+                    co2Total += a.getCo2_evitado();
+                }
+
+                // Atualização da UI do Cabeçalho
+                tvTotalTrajetos.setText(String.valueOf(totalTrajetos));
+                tvSummaryDistancia.setText(String.format(java.util.Locale.getDefault(), "%.1f", kmTotal));
+                tvSummaryCO2.setText(String.format(java.util.Locale.getDefault(), "%.1f", co2Total));
             }
         });
 
