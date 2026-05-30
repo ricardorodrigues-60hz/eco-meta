@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
+import com.example.ecometa.repository.EcoMetaRepository;
 import com.example.ecometa.ui.adapter.RankingAdapter;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
@@ -29,7 +30,7 @@ public class RankingFragment extends Fragment {
         rvRanking = view.findViewById(R.id.rvRanking);
         rvRanking.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ViewModelFactory factory = new ViewModelFactory(new AutenticacaoRepository());
+        ViewModelFactory factory = new ViewModelFactory(new AutenticacaoRepository(), new EcoMetaRepository());
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
 
         setupObservers();

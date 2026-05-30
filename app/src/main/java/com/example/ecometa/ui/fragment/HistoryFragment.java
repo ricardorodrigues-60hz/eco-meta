@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
+import com.example.ecometa.repository.EcoMetaRepository;
 import com.example.ecometa.ui.adapter.AtividadeAdapter;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
@@ -23,7 +24,8 @@ public class HistoryFragment extends Fragment {
     private EcoMetaViewModel viewModel;
     private RecyclerView rvHistory;
     private TextView tvTotalTrajetos, tvSummaryDistancia, tvSummaryCO2;
-    private AutenticacaoRepository repository; //
+    private AutenticacaoRepository authRepository;
+    private EcoMetaRepository dataRepository;
 
     @Nullable
     @Override
@@ -37,16 +39,15 @@ public class HistoryFragment extends Fragment {
         tvSummaryDistancia = view.findViewById(R.id.tvSummaryDistancia);
         tvSummaryCO2 = view.findViewById(R.id.tvSummaryCO2);
 
+        authRepository = new AutenticacaoRepository();
+        dataRepository = new EcoMetaRepository();
 
-        repository = new AutenticacaoRepository();
-
-        ViewModelFactory factory = new ViewModelFactory(repository);
+        ViewModelFactory factory = new ViewModelFactory(authRepository, dataRepository);
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
 
         setupObservers();
 
-
-        String userIdReal = repository.obterIdUsuarioAtual();
+        String userIdReal = authRepository.obterIdUsuarioAtual();
         if (userIdReal != null) {
             viewModel.carregarAtividades(userIdReal);
         } else {
@@ -59,10 +60,8 @@ public class HistoryFragment extends Fragment {
     private void setupObservers() {
         viewModel.atividades.observe(getViewLifecycleOwner(), atividades -> {
             if (atividades != null) {
-                android.util.Log.d("ECO_META_TESTE", "Total de atividades trazidas do banco: " + atividades.size());
                 rvHistory.setAdapter(new AtividadeAdapter(atividades));
 
-                // Cálculo do Resumo Dinâmico
                 int totalTrajetos = atividades.size();
                 double kmTotal = 0;
                 double co2Total = 0;
@@ -72,20 +71,16 @@ public class HistoryFragment extends Fragment {
                     co2Total += a.getCo2_evitado();
                 }
 
-                // Atualização da UI do Cabeçalho
                 tvTotalTrajetos.setText(String.valueOf(totalTrajetos));
                 tvSummaryDistancia.setText(String.format(java.util.Locale.getDefault(), "%.1f", kmTotal));
                 tvSummaryCO2.setText(String.format(java.util.Locale.getDefault(), "%.1f", co2Total));
             }
         });
 
-        // Adicione a observação de erro para ver se o Firebase está rejeitando algo
         viewModel.erro.observe(getViewLifecycleOwner(), mensagemErro -> {
             if (mensagemErro != null) {
-                android.util.Log.e("ECO_META_ERRO", "Erro na ViewModel: " + mensagemErro);
                 Toast.makeText(getContext(), "Erro no banco: " + mensagemErro, Toast.LENGTH_LONG).show();
             }
         });
     }
-
 }

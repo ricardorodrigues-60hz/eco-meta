@@ -68,6 +68,24 @@
                 android:textColor="@color/eco_green_primary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressDesafio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:indicatorColor="@color/eco_green_primary"
+                app:trackColor="@color/eco_green_light"
+                app:trackCornerRadius="4dp" />
+
+            <TextView
+                android:id="@+id/tvProgressoTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="0.0 / 10.0 km"
+                android:textColor="@color/eco_text_secondary"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout

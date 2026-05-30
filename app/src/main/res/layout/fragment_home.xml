@@ -149,7 +149,7 @@
                         android:id="@+id/tvEcoPoints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1250"
+                        tools:text="1250"
                         android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -192,7 +192,7 @@
                         android:id="@+id/tvCO2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="42.5 kg"
+                        tools:text="42.5 kg"
                         android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold" />

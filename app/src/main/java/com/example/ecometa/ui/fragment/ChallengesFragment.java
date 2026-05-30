@@ -14,16 +14,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
+import com.example.ecometa.repository.EcoMetaRepository;
 import com.example.ecometa.ui.adapter.ChallengesAdapter;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
+import java.util.ArrayList;
 
+/**
+ * Fragment de Desafios.
+ */
 public class ChallengesFragment extends Fragment {
 
     private EcoMetaViewModel viewModel;
     private RecyclerView rvChallenges;
+    private ChallengesAdapter adapter;
     private TextView tvTotalChallenges, tvCompletedChallenges;
-    private AutenticacaoRepository repository;
+    private AutenticacaoRepository authRepository;
+    private EcoMetaRepository dataRepository;
 
     @Nullable
     @Override
@@ -32,40 +39,53 @@ public class ChallengesFragment extends Fragment {
 
         rvChallenges = view.findViewById(R.id.rvChallenges);
         rvChallenges.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        
         tvTotalChallenges = view.findViewById(R.id.tvTotalChallenges);
         tvCompletedChallenges = view.findViewById(R.id.tvCompletedChallenges);
 
-        repository = new AutenticacaoRepository();
-        ViewModelFactory factory = new ViewModelFactory(repository);
+        adapter = new ChallengesAdapter(new ArrayList<>());
+        rvChallenges.setAdapter(adapter);
+
+        authRepository = new AutenticacaoRepository();
+        dataRepository = new EcoMetaRepository();
+        ViewModelFactory factory = new ViewModelFactory(authRepository, dataRepository);
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setupObservers();
 
-        String userIdReal = repository.obterIdUsuarioAtual();
+        String userIdReal = authRepository.obterIdUsuarioAtual();
         if (userIdReal != null) {
             viewModel.carregarDesafiosEConquistas(userIdReal);
         } else {
             Toast.makeText(getContext(), "Erro: Usuário não autenticado.", Toast.LENGTH_SHORT).show();
         }
-
-        return view;
     }
 
     private void setupObservers() {
         viewModel.desafiosStatus.observe(getViewLifecycleOwner(), desafiosStatusList -> {
             if (desafiosStatusList != null) {
-                rvChallenges.setAdapter(new ChallengesAdapter(desafiosStatusList));
+                adapter.setListaDesafios(desafiosStatusList);
 
-                // Atualiza o cabeçalho dinamicamente
-                int totalDisponiveis = desafiosStatusList.size();
-                int totalConcluidos = 0;
+                int total = desafiosStatusList.size();
+                int concluidos = 0;
                 for (com.example.ecometa.model.DesafioStatus ds : desafiosStatusList) {
-                    if (ds.isConquistado()) totalConcluidos++;
+                    if (ds.isConcluido()) concluidos++;
                 }
 
-                tvTotalChallenges.setText(String.valueOf(totalDisponiveis));
-                tvCompletedChallenges.setText(String.valueOf(totalConcluidos));
+                if (tvTotalChallenges != null) tvTotalChallenges.setText(String.valueOf(total));
+                if (tvCompletedChallenges != null) tvCompletedChallenges.setText(String.valueOf(concluidos));
+            }
+        });
+
+        viewModel.erro.observe(getViewLifecycleOwner(), msgErro -> {
+            if (msgErro != null) {
+                Toast.makeText(getContext(), msgErro, Toast.LENGTH_LONG).show();
             }
         });
     }

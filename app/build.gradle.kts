@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.ecometa"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.ecometa"
@@ -33,8 +33,8 @@ android {
         compose = false
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
@@ -48,8 +48,8 @@ dependencies {
     implementation(libs.firebase.auth)
     
     // Navigation (XML Based)
-    implementation("androidx.navigation:navigation-fragment:2.8.8")
-    implementation("androidx.navigation:navigation-ui:2.8.8")
+    implementation("androidx.navigation:navigation-fragment:2.9.8")
+    implementation("androidx.navigation:navigation-ui:2.9.8")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)

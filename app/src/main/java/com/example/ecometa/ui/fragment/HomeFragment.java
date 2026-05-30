@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
+import com.example.ecometa.repository.EcoMetaRepository;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -23,7 +24,8 @@ public class HomeFragment extends Fragment {
     private EcoMetaViewModel viewModel;
     private TextView tvNivel, tvEcoPoints, tvCO2;
     private LinearProgressIndicator progressLevel;
-    private AutenticacaoRepository repository; //  Criado para gerenciar a sessão ativa do Firebase
+    private AutenticacaoRepository authRepository;
+    private EcoMetaRepository dataRepository;
 
     @Nullable
     @Override
@@ -39,16 +41,15 @@ public class HomeFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.registrarAtividadeFragment);
         });
 
-        // Inicializa o repositório
-        repository = new AutenticacaoRepository();
+        authRepository = new AutenticacaoRepository();
+        dataRepository = new EcoMetaRepository();
 
-        ViewModelFactory factory = new ViewModelFactory(repository);
+        ViewModelFactory factory = new ViewModelFactory(authRepository, dataRepository);
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
 
         setupObservers();
 
-        // Busca dinamicamente o UID do usuário que está logado no app
-        String userIdReal = repository.obterIdUsuarioAtual();
+        String userIdReal = authRepository.obterIdUsuarioAtual();
         if (userIdReal != null) {
             viewModel.carregarDadosUsuario(userIdReal);
         } else {
@@ -64,9 +65,13 @@ public class HomeFragment extends Fragment {
                 tvNivel.setText(usuario.getNivel());
                 tvEcoPoints.setText(String.valueOf(usuario.getEco_points()));
                 tvCO2.setText(String.format(Locale.getDefault(), "%.1f kg", usuario.getTotal_co2_poupado()));
-
-                // Mantém a sua lógica de cálculo de progresso para a barra baseada nos pontos
                 progressLevel.setProgress(usuario.getEco_points() % 1000 / 10, true);
+            }
+        });
+
+        viewModel.erro.observe(getViewLifecycleOwner(), erro -> {
+            if (erro != null) {
+                Toast.makeText(getContext(), erro, Toast.LENGTH_LONG).show();
             }
         });
     }

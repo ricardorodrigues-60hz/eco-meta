@@ -14,13 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.ecometa.R;
 import com.example.ecometa.repository.AutenticacaoRepository;
+import com.example.ecometa.repository.EcoMetaRepository;
 import com.example.ecometa.viewmodel.EcoMetaViewModel;
 import com.example.ecometa.viewmodel.ViewModelFactory;
 
 public class RegistrarAtividadeFragment extends Fragment {
 
     private EcoMetaViewModel viewModel;
-    private AutenticacaoRepository repository;
+    private AutenticacaoRepository authRepository;
+    private EcoMetaRepository dataRepository;
 
     private Spinner spinnerTransporte;
     private EditText etDistancia;
@@ -32,7 +34,6 @@ public class RegistrarAtividadeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_registrar_atividade, container, false);
 
-        // Vincula as views do XML
         spinnerTransporte = view.findViewById(R.id.spinnerTransporte);
         etDistancia = view.findViewById(R.id.etDistancia);
         btnRegistrar = view.findViewById(R.id.btnRegistrarAtividade);
@@ -44,10 +45,12 @@ public class RegistrarAtividadeFragment extends Fragment {
 
         setupTransportSelection();
 
-        // Inicializa arquitetura MVVM idêntica aos seus outros fragments
-        repository = new AutenticacaoRepository();
-        ViewModelFactory factory = new ViewModelFactory(repository);
+        authRepository = new AutenticacaoRepository();
+        dataRepository = new EcoMetaRepository();
+        ViewModelFactory factory = new ViewModelFactory(authRepository, dataRepository);
         viewModel = new ViewModelProvider(this, factory).get(EcoMetaViewModel.class);
+
+        setupObservers();
 
         btnRegistrar.setOnClickListener(v -> executarRegistro());
 
@@ -56,6 +59,23 @@ public class RegistrarAtividadeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void setupObservers() {
+        viewModel.sucessoOperacao.observe(getViewLifecycleOwner(), sucesso -> {
+            if (Boolean.TRUE.equals(sucesso)) {
+                Toast.makeText(getContext(), "Atividade registrada com sucesso!", Toast.LENGTH_SHORT).show();
+                etDistancia.setText("");
+                if (getActivity() != null) getActivity().onBackPressed();
+            }
+        });
+
+        viewModel.erro.observe(getViewLifecycleOwner(), erro -> {
+            if (erro != null) {
+                Toast.makeText(getContext(), "Erro ao registrar: " + erro, Toast.LENGTH_LONG).show();
+                btnRegistrar.setEnabled(true);
+            }
+        });
     }
 
     private void setupTransportSelection() {
@@ -67,13 +87,11 @@ public class RegistrarAtividadeFragment extends Fragment {
 
             v.setSelected(true);
             
-            // Atualiza o Spinner baseado no card clicado (Ordem: Bicicleta, Caminhada, Ônibus, Metrô)
             if (v.getId() == R.id.cardBike) spinnerTransporte.setSelection(0);
             else if (v.getId() == R.id.cardWalk) spinnerTransporte.setSelection(1);
             else if (v.getId() == R.id.cardBus) spinnerTransporte.setSelection(2);
             else if (v.getId() == R.id.cardMetro) spinnerTransporte.setSelection(3);
 
-            // Habilita visualmente o botão (Verde Forte)
             btnRegistrar.setBackgroundTintList(android.content.res.ColorStateList.valueOf(
                 androidx.core.content.ContextCompat.getColor(getContext(), R.color.eco_green_primary)
             ));
@@ -88,7 +106,6 @@ public class RegistrarAtividadeFragment extends Fragment {
     private void executarRegistro() {
         String distanciaTexto = etDistancia.getText().toString().trim();
 
-        // Validações básicas de entrada
         if (distanciaTexto.isEmpty()) {
             etDistancia.setError("Informe a distância percorrida");
             return;
@@ -101,16 +118,11 @@ public class RegistrarAtividadeFragment extends Fragment {
         }
 
         String transporteSelecionado = spinnerTransporte.getSelectedItem().toString();
-        String userId = repository.obterIdUsuarioAtual();
+        String userId = authRepository.obterIdUsuarioAtual();
 
-        // 2. Dispara o método exato da sua ViewModel
         if (userId != null) {
+            btnRegistrar.setEnabled(false);
             viewModel.registrarNovaAtividade(userId, transporteSelecionado, distancia);
-
-            Toast.makeText(getContext(), "Atividade registrada com sucesso!", Toast.LENGTH_SHORT).show();
-
-            // Limpa o campo de texto para um próximo registro
-            etDistancia.setText("");
         } else {
             Toast.makeText(getContext(), "Erro: Usuário não autenticado.", Toast.LENGTH_SHORT).show();
         }
